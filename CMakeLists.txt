@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 
 project(asio)
 include(GNUInstallDirs)
+find_package(Threads REQUIRED)
 
 add_library(asio_headeronly INTERFACE)
 target_compile_features(asio_headeronly INTERFACE cxx_std_11)
@@ -12,6 +13,7 @@ target_compile_definitions(asio_headeronly INTERFACE
 target_include_directories(asio_headeronly INTERFACE
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/asio/include>"
 )
+target_link_libraries(asio_headeronly INTERFACE Threads::Threads)
 
 add_library(asio_shared SHARED "asio/include/asio/impl/src.cpp")
 target_compile_features(asio_shared PUBLIC cxx_std_11)
@@ -24,6 +26,7 @@ target_compile_definitions(asio_shared PUBLIC
 target_include_directories(asio_shared PUBLIC
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/asio/include>"
 )
+target_link_libraries(asio_shared PUBLIC Threads::Threads)
 
 add_library(asio_static STATIC "asio/include/asio/impl/src.cpp")
 target_compile_features(asio_static PUBLIC cxx_std_11)
@@ -35,6 +38,8 @@ target_compile_definitions(asio_static PUBLIC
 target_include_directories(asio_static PUBLIC
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/asio/include>"
 )
+set_target_properties(asio_static PROPERTIES POSITION_INDEPENDENT_CODE On)
+target_link_libraries(asio_static PUBLIC Threads::Threads)
 
 
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/asio/include/asio" DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
