@@ -19,6 +19,8 @@
 
 #if !defined(ASIO_HAS_THREADS)
 # include "asio/detail/null_thread.hpp"
+#elif defined(ASIO_HAS_POLYFILL_THREAD)
+# include "asio/detail/polyfill_thread.hpp"
 #elif defined(ASIO_WINDOWS)
 # if defined(UNDER_CE)
 #  include "asio/detail/wince_thread.hpp"
@@ -40,6 +42,8 @@ namespace detail {
 
 #if !defined(ASIO_HAS_THREADS)
 typedef null_thread thread;
+#elif defined(ASIO_HAS_POLYFILL_THREAD)
+typedef polyfill_thread thread;
 #elif defined(ASIO_WINDOWS)
 # if defined(UNDER_CE)
 typedef wince_thread thread;

@@ -33,6 +33,22 @@ struct thread_pool::thread_function
   }
 };
 
+#ifdef ASIO_HAS_POLYFILL_THREAD
+thread_pool::thread_pool(const cpf::thread::attributes& attr)
+  : thread_pool(attr,
+                detail::thread::hardware_concurrency() ? detail::thread::hardware_concurrency()*2 : 2)
+{
+}
+
+thread_pool::thread_pool(const cpf::thread::attributes& attr, std::size_t num_threads)
+  : scheduler_(use_service<detail::scheduler>(*this))
+{
+  scheduler_.work_started();
+
+  thread_function f = { &scheduler_ };
+  threads_.create_threads(f, attr, num_threads);
+}
+#else
 thread_pool::thread_pool()
   : scheduler_(use_service<detail::scheduler>(*this))
 {
@@ -51,6 +67,7 @@ thread_pool::thread_pool(std::size_t num_threads)
   thread_function f = { &scheduler_ };
   threads_.create_threads(f, num_threads);
 }
+#endif
 
 thread_pool::~thread_pool()
 {

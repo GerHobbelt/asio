@@ -66,11 +66,19 @@ class thread_pool
 public:
   class executor_type;
 
+#ifdef ASIO_HAS_POLYFILL_THREAD
+  /// Constructs a pool with an automatically determined number of threads.
+  ASIO_DECL thread_pool(const cpf::thread::attributes& attr);
+
+  /// Constructs a pool with a specified number of threads.
+  ASIO_DECL thread_pool(const cpf::thread::attributes& attr, std::size_t num_threads);
+#else
   /// Constructs a pool with an automatically determined number of threads.
   ASIO_DECL thread_pool();
 
   /// Constructs a pool with a specified number of threads.
   ASIO_DECL thread_pool(std::size_t num_threads);
+#endif
 
   /// Destructor.
   /**
@@ -95,6 +103,20 @@ public:
    * until the pool has no more outstanding work.
    */
   ASIO_DECL void join();
+
+#ifdef ASIO_HAS_POLYFILL_THREAD
+  cpf::thread::priority_type priority() const { return threads_.priority(); }
+  void priority(cpf::thread::priority_type value) { threads_.priority(value); }
+
+  cpf::thread::native_priority_type native_priority() const { return threads_.native_priority(); }
+  void native_priority(cpf::thread::native_priority_type value) { threads_.native_priority(value); }
+
+  cpf::thread::affinity_type affinity() const { return threads_.affinity(); }
+  void affinity(const cpf::thread::affinity_type& affinity) { threads_.affinity(affinity); }
+
+  cpf::thread::dtor_action_type dtor_action() const noexcept{ return threads_.dtor_action();}
+  void dtor_action(cpf::thread::dtor_action_type action) noexcept { threads_.dtor_action(action); }
+#endif
 
 private:
   friend class executor_type;
