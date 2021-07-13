@@ -104,7 +104,10 @@ sub copy_source_file
   $is_test = 1 if ($from =~ /tests\/unit/);
 
   my $is_coroutine_related = 0;
-  $is_coroutine_related = 1 if ($from =~ /await/);
+  $is_coroutine_related = 1 if ($from =~ /await/ || $from =~ /partial_promise/);
+
+  my $is_hash_related = 0;
+  $is_hash_related = 1 if ($from =~ /ip\/address/ || $from =~ /ip\/basic_endpoint/);
 
   # Open the files.
   open(my $input, "<$from") or die("Can't open $from for reading");
@@ -274,7 +277,7 @@ sub copy_source_file
         print_line($output, $1 . "boost::thread" . $2, $from, $lineno);
       }
     }
-    elsif ($line =~ /namespace std \{ *$/ && !$is_coroutine_related)
+    elsif ($line =~ /namespace std \{ *$/ && !$is_coroutine_related && !$is_hash_related)
     {
       print_line($output, "namespace boost {", $from, $lineno);
       print_line($output, "namespace system {", $from, $lineno);
@@ -285,7 +288,7 @@ sub copy_source_file
       $line =~ s/asio::/boost::asio::/g if !$is_xsl;
       print_line($output, $line, $from, $lineno);
     }
-    elsif ($line =~ /^} \/\/ namespace std/ && !$is_coroutine_related)
+    elsif ($line =~ /^} \/\/ namespace std/ && !$is_coroutine_related && !$is_hash_related)
     {
       print_line($output, "} // namespace system", $from, $lineno);
       print_line($output, "} // namespace boost", $from, $lineno);
@@ -373,6 +376,7 @@ sub copy_include_files
       "include/asio/execution/detail",
       "include/asio/execution/impl",
       "include/asio/experimental",
+      "include/asio/experimental/detail",
       "include/asio/experimental/impl",
       "include/asio/generic",
       "include/asio/generic/detail",
@@ -399,7 +403,7 @@ sub copy_include_files
   foreach my $dir (@dirs)
   {
     our $boost_dir;
-    my @files = ( glob("$dir/*.hpp"), glob("$dir/*.ipp"), glob("$dir/*cpp") );
+    my @files = ( glob("$dir/*.hpp"), glob("$dir/*.ipp") );
     foreach my $file (@files)
     {
       if ($file ne "include/asio/thread.hpp"
@@ -437,6 +441,8 @@ sub copy_unit_tests
       "src/tests/unit",
       "src/tests/unit/archetypes",
       "src/tests/unit/execution",
+      "src/tests/unit/experimental",
+      "src/tests/unit/experimental/coro",
       "src/tests/unit/generic",
       "src/tests/unit/ip",
       "src/tests/unit/local",
@@ -566,8 +572,10 @@ sub copy_examples
       "src/examples/cpp11/ssl",
       "src/examples/cpp11/timeouts",
       "src/examples/cpp11/timers",
+      "src/examples/cpp14/deferred",
       "src/examples/cpp14/executors",
       "src/examples/cpp14/operations",
+      "src/examples/cpp14/parallel_group",
       "src/examples/cpp17/coroutines_ts");
 
   our $boost_dir;

@@ -9,7 +9,7 @@
 cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
 cmake_policy(VERSION 3.14...3.20)
 
-project(asio VERSION 1.18.1 LANGUAGES CXX)
+project(asio VERSION 1.19.1 LANGUAGES CXX)
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
 endif()
