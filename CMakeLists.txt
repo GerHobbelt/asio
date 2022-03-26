@@ -16,7 +16,7 @@ file(GLOB_RECURSE HEADERS CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/asio/in
 
 target_sources(${PROJECT_NAME} INTERFACE ${HEADERS})
 
-target_include_directories(${PROJECT_NAME} INTERFACE ${CMAKE_BINARY_DIR}/asio/include)
+target_include_directories(${PROJECT_NAME} INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/asio/include)
 
 target_compile_definitions(${PROJECT_NAME} INTERFACE ASIO_STANDALONE ASIO_NO_DEPRECATED)
 
