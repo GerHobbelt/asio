@@ -15,7 +15,9 @@ target_include_directories(asio_headeronly INTERFACE
 )
 target_link_libraries(asio_headeronly INTERFACE Threads::Threads)
 
-add_library(asio_shared SHARED "asio/include/asio/impl/src.hpp")
+set(asio_source_file "${CMAKE_CURRENT_LIST_DIR}/asio/include/asio/impl/src.hpp")
+set_source_files_properties("${asio_source_file}" PROPERTIES LANGUAGE CXX)
+add_library(asio_shared SHARED "${asio_source_file}")
 target_compile_features(asio_shared PUBLIC cxx_std_11)
 target_compile_definitions(asio_shared PUBLIC
   ASIO_STANDALONE=1
@@ -28,7 +30,7 @@ target_include_directories(asio_shared PUBLIC
 )
 target_link_libraries(asio_shared PUBLIC Threads::Threads)
 
-add_library(asio_static STATIC "asio/include/asio/impl/src.hpp")
+add_library(asio_static STATIC "${asio_source_file}")
 target_compile_features(asio_static PUBLIC cxx_std_11)
 target_compile_definitions(asio_static PUBLIC
   ASIO_STANDALONE=1
