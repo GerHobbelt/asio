@@ -15,7 +15,7 @@ target_include_directories(asio_headeronly INTERFACE
 )
 target_link_libraries(asio_headeronly INTERFACE Threads::Threads)
 
-add_library(asio_shared SHARED "asio/include/asio/impl/src.cpp")
+add_library(asio_shared SHARED "asio/include/asio/impl/src.hpp")
 target_compile_features(asio_shared PUBLIC cxx_std_11)
 target_compile_definitions(asio_shared PUBLIC
   ASIO_STANDALONE=1
@@ -28,7 +28,7 @@ target_include_directories(asio_shared PUBLIC
 )
 target_link_libraries(asio_shared PUBLIC Threads::Threads)
 
-add_library(asio_static STATIC "asio/include/asio/impl/src.cpp")
+add_library(asio_static STATIC "asio/include/asio/impl/src.hpp")
 target_compile_features(asio_static PUBLIC cxx_std_11)
 target_compile_definitions(asio_static PUBLIC
   ASIO_STANDALONE=1
