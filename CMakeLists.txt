@@ -15,8 +15,8 @@ target_include_directories(asio_headeronly INTERFACE
 )
 target_link_libraries(asio_headeronly INTERFACE Threads::Threads)
 
-set(asio_source_file "${CMAKE_CURRENT_LIST_DIR}/asio/include/asio/impl/src.hpp")
-set_source_files_properties("${asio_source_file}" PROPERTIES LANGUAGE CXX)
+set(asio_source_file "${CMAKE_CURRENT_BINARY_DIR}/src.cpp")
+file(WRITE "${asio_source_file}" "#include <asio/impl/src.hpp>")
 add_library(asio_shared SHARED "${asio_source_file}")
 target_compile_features(asio_shared PUBLIC cxx_std_11)
 target_compile_definitions(asio_shared PUBLIC
@@ -29,6 +29,7 @@ target_include_directories(asio_shared PUBLIC
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/asio/include>"
 )
 target_link_libraries(asio_shared PUBLIC Threads::Threads)
+set_target_properties(asio_shared PROPERTIES CXX_VISIBILITY_PRESET hidden VISIBILITY_INLINES_HIDDEN on)
 
 add_library(asio_static STATIC "${asio_source_file}")
 target_compile_features(asio_static PUBLIC cxx_std_11)
