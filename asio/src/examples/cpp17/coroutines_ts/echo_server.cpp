@@ -10,6 +10,7 @@
 
 #include <asio/co_spawn.hpp>
 #include <asio/detached.hpp>
+#include <asio/deferred.hpp>
 #include <asio/io_context.hpp>
 #include <asio/ip/tcp.hpp>
 #include <asio/signal_set.hpp>
@@ -35,11 +36,11 @@ awaitable<void> echo(tcp::socket socket)
     char data[1024];
     for (;;)
     {
-      std::size_t n = co_await socket.async_read_some(asio::buffer(data), use_awaitable);
-      co_await async_write(socket, asio::buffer(data, n), use_awaitable);
+      std::size_t n = co_await socket.async_read_some(asio::buffer(data), asio::deferred);
+      co_await async_write(socket, asio::buffer(data, n), asio::deferred);
     }
   }
-  catch (std::exception& e)
+  catch (const std::exception& e)
   {
     std::printf("echo Exception: %s\n", e.what());
   }
@@ -48,10 +49,10 @@ awaitable<void> echo(tcp::socket socket)
 awaitable<void> listener()
 {
   auto executor = co_await this_coro::executor;
-  tcp::acceptor acceptor(executor, {tcp::v4(), 55555});
+  tcp::acceptor acceptor(executor, {tcp::v4(), 55556});
   for (;;)
   {
-    tcp::socket socket = co_await acceptor.async_accept(use_awaitable);
+    tcp::socket socket = co_await acceptor.async_accept(asio::deferred);
     co_spawn(executor, echo(std::move(socket)), detached);
   }
 }
