@@ -1616,9 +1616,9 @@
 // Windows: minimise header inclusion.
 #if defined(ASIO_WINDOWS) || defined(__CYGWIN__)
 # if !defined(ASIO_NO_WIN32_LEAN_AND_MEAN)
-#  if !defined(WIN32_LEAN_AND_MEAN)
-#   define WIN32_LEAN_AND_MEAN
-#  endif // !defined(WIN32_LEAN_AND_MEAN)
+//#  if !defined(WIN32_LEAN_AND_MEAN)
+//#   define WIN32_LEAN_AND_MEAN
+//#  endif // !defined(WIN32_LEAN_AND_MEAN)
 # endif // !defined(ASIO_NO_WIN32_LEAN_AND_MEAN)
 #endif // defined(ASIO_WINDOWS) || defined(__CYGWIN__)
 
