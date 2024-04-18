@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2021-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+# Copyright (C) 2021-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
 #                                                                              #
 #              This software is distributed under the terms of the             #
 #              GNU Lesser General Public Licence (LGPL) version 3,             #
@@ -7,9 +7,9 @@
 ################################################################################
 
 cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
-cmake_policy(VERSION 3.14...3.24)
+cmake_policy(VERSION 3.14...3.28)
 
-project(asio VERSION 1.24.0 LANGUAGES CXX)
+project(asio VERSION 1.30.2 LANGUAGES CXX)
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
 endif()
