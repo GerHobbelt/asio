@@ -254,7 +254,7 @@ private:
   actor_address caller_;
 };
 
-int main()
+int main(void)
 {
   const std::size_t num_threads = 16;
   const int num_hops = 50000000;

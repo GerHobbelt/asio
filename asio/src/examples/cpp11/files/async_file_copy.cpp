@@ -97,5 +97,5 @@ int main(int argc, char* argv[])
 }
 
 #else // defined(ASIO_HAS_FILE)
-int main() {}
+int main(void) {}
 #endif // defined(ASIO_HAS_FILE)

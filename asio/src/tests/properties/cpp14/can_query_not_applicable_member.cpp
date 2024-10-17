@@ -20,7 +20,7 @@ struct object
   constexpr int query(prop) const { return 123; }
 };
 
-int main()
+int main(void)
 {
   static_assert(!asio::can_query_v<object, prop>, "");
   static_assert(!asio::can_query_v<const object, prop>, "");

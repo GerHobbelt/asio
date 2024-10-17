@@ -157,7 +157,7 @@ private:
   bool stopped_ = false;
 };
 
-int main()
+int main(void)
 {
   priority_scheduler sched;
   auto ex = sched.executor();

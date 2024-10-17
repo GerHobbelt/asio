@@ -68,7 +68,7 @@ private:
   int count_;
 };
 
-int main()
+int main(void)
 {
   asio::io_context io;
   printer p(io);

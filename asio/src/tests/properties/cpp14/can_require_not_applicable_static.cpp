@@ -24,7 +24,7 @@ struct object
 {
 };
 
-int main()
+int main(void)
 {
   static_assert(!asio::can_require_v<object<1>, prop<1>>, "");
   static_assert(!asio::can_require_v<object<1>, prop<1>, prop<1>>, "");

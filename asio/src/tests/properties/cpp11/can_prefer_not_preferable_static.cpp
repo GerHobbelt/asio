@@ -32,7 +32,7 @@ struct is_applicable_property<object<N>, prop<M> >
 
 } // namespace asio
 
-int main()
+int main(void)
 {
   static_assert(!asio::can_prefer<object<1>, prop<1>>::value, "");
   static_assert(!asio::can_prefer<object<1>, prop<1>, prop<1>>::value, "");

@@ -26,7 +26,7 @@ void print(const asio::error_code& /*e*/,
   }
 }
 
-int main()
+int main(void)
 {
   asio::io_context io;
 

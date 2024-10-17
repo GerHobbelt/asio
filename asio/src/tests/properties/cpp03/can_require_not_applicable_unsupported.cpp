@@ -21,7 +21,7 @@ struct object
 {
 };
 
-int main()
+int main(void)
 {
   assert((!asio::can_require<object<1>, prop<2> >::value));
   assert((!asio::can_require<object<1>, prop<2>, prop<3> >::value));

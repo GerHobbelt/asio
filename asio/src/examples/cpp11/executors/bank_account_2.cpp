@@ -45,7 +45,7 @@ public:
   }
 };
 
-int main()
+int main(void)
 {
   bank_account acct;
   acct.deposit(20);

@@ -57,7 +57,7 @@ awaitable<void> listen(tcp::acceptor& acceptor)
   }
 }
 
-int main()
+int main(void)
 {
   io_context ctx;
   tcp::acceptor acceptor(ctx, {tcp::v4(), 54321});

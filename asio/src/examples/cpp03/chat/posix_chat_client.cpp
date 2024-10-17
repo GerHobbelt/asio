@@ -200,5 +200,5 @@ int main(int argc, char* argv[])
 }
 
 #else // defined(ASIO_HAS_POSIX_STREAM_DESCRIPTOR)
-int main() {}
+int main(void) {}
 #endif // defined(ASIO_HAS_POSIX_STREAM_DESCRIPTOR)

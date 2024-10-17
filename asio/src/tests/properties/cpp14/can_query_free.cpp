@@ -21,7 +21,7 @@ struct object
   friend constexpr int query(const object&, prop) { return 123; }
 };
 
-int main()
+int main(void)
 {
   static_assert(asio::can_query_v<object, prop>, "");
   static_assert(asio::can_query_v<const object, prop>, "");

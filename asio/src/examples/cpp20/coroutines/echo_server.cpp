@@ -56,7 +56,7 @@ awaitable<void> listener()
   }
 }
 
-int main()
+int main(void)
 {
   try
   {

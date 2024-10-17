@@ -35,7 +35,7 @@ void async_getline(IoExecutor io_ex, std::istream& is, Handler handler)
       });
 }
 
-int main()
+int main(void)
 {
   static_thread_pool io_pool(1);
   static_thread_pool completion_pool(1);

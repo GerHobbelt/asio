@@ -37,7 +37,7 @@ struct is_applicable_property<object<N>, prop<M> >
 
 } // namespace asio
 
-int main()
+int main(void)
 {
   object<1> o1 = {};
   object<2> o2 = asio::prefer(o1, prop<2>());

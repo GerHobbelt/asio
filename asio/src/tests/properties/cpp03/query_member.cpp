@@ -41,7 +41,7 @@ struct query_member<object, prop>
 } // namespace traits
 } // namespace asio
 
-int main()
+int main(void)
 {
   object o1 = {};
   int result1 = asio::query(o1, prop());

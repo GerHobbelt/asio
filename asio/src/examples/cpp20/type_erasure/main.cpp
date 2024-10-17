@@ -26,7 +26,7 @@ asio::awaitable<void> do_read(line_reader& reader)
   }
 }
 
-int main()
+int main(void)
 {
   asio::io_context ctx{1};
   stdin_line_reader reader{ctx.get_executor()};

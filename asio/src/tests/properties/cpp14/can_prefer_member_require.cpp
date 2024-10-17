@@ -28,7 +28,7 @@ struct object
   }
 };
 
-int main()
+int main(void)
 {
   static_assert(asio::can_prefer_v<object<1>, prop<2>>, "");
   static_assert(asio::can_prefer_v<object<1>, prop<2>, prop<3>>, "");

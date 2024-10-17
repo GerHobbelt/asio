@@ -31,7 +31,7 @@ struct is_applicable_property<object<N>, prop<M> >
 
 } // namespace asio
 
-int main()
+int main(void)
 {
   static_assert(!asio::can_require_v<object<1>, prop<2>>, "");
   static_assert(!asio::can_require_v<object<1>, prop<2>, prop<3>>, "");

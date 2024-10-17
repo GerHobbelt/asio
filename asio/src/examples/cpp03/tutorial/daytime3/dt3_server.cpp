@@ -102,7 +102,7 @@ private:
   tcp::acceptor acceptor_;
 };
 
-int main()
+int main(void)
 {
   try
   {

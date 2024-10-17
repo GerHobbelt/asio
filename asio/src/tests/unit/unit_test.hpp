@@ -142,7 +142,7 @@ void throw_exception(const T& t)
   } while (0)
 
 #define ASIO_TEST_SUITE(name, tests) \
-  int main() \
+  int main(void) \
   { \
     asio::detail::begin_test_suite(name); \
     tests \

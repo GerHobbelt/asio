@@ -31,7 +31,7 @@ struct is_applicable_property<object<N>, prop<M> >
 
 } // namespace asio
 
-int main()
+int main(void)
 {
   assert((!asio::can_require<object<1>, prop<2> >::value));
   assert((!asio::can_require<object<1>, prop<2>, prop<3> >::value));

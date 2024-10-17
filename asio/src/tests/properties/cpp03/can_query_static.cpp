@@ -41,7 +41,7 @@ struct static_query<object, prop>
 } // namespace traits
 } // namespace asio
 
-int main()
+int main(void)
 {
   assert((asio::can_query<object, prop>::value));
   assert((asio::can_query<const object, prop>::value));

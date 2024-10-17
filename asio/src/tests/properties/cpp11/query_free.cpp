@@ -30,7 +30,7 @@ struct is_applicable_property<object, prop>
 
 } // namespace asio
 
-int main()
+int main(void)
 {
   object o1 = {};
   int result1 = asio::query(o1, prop());

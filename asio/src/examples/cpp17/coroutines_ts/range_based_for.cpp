@@ -81,7 +81,7 @@ awaitable<void> listener(tcp::acceptor acceptor)
   }
 }
 
-int main()
+int main(void)
 {
   try
   {

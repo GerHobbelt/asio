@@ -25,7 +25,7 @@ struct object
 {
 };
 
-int main()
+int main(void)
 {
   object<1> o1 = {};
   object<1> o2 = asio::require(o1, prop<1>());

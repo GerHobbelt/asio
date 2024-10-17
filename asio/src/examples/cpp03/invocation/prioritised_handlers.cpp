@@ -134,7 +134,7 @@ void low_priority_handler()
   std::cout << "Low priority handler\n";
 }
 
-int main()
+int main(void)
 {
   asio::io_context io_context;
 

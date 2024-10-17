@@ -13,7 +13,7 @@
 
 using asio::deferred;
 
-int main()
+int main(void)
 {
   asio::io_context ctx;
 

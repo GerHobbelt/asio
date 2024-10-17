@@ -246,7 +246,7 @@ void test_future()
 
 //------------------------------------------------------------------------------
 
-int main()
+int main(void)
 {
   test_callback();
   test_deferred();

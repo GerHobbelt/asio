@@ -11,7 +11,7 @@
 #include <iostream>
 #include <asio.hpp>
 
-int main()
+int main(void)
 {
   asio::io_context io;
 

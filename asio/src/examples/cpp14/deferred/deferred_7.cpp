@@ -47,7 +47,7 @@ auto async_wait_twice(asio::steady_timer& timer, CompletionToken&& token)
     | std::forward<CompletionToken>(token);
 }
 
-int main()
+int main(void)
 {
   asio::io_context ctx;
 

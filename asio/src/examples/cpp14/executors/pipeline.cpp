@@ -271,7 +271,7 @@ void writer(queue_back<std::string> in)
     std::cout << count++ << ": " << line << std::endl;
 }
 
-int main()
+int main(void)
 {
   static_thread_pool pool(1);
 

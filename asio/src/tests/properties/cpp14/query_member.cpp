@@ -21,7 +21,7 @@ struct object
   constexpr int query(prop) const { return 123; }
 };
 
-int main()
+int main(void)
 {
   object o1 = {};
   int result1 = asio::query(o1, prop());

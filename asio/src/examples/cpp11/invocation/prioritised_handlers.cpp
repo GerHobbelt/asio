@@ -166,7 +166,7 @@ struct low_priority_handler
   }
 };
 
-int main()
+int main(void)
 {
   asio::io_context io_context;
 

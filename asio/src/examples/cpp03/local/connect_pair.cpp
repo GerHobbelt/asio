@@ -94,7 +94,7 @@ void run(asio::io_context* io_context)
   }
 }
 
-int main()
+int main(void)
 {
   try
   {

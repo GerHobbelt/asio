@@ -19,7 +19,7 @@ struct object
 {
 };
 
-int main()
+int main(void)
 {
   static_assert(!asio::can_query<object, prop>::value, "");
   static_assert(!asio::can_query<const object, prop>::value, "");

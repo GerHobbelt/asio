@@ -130,7 +130,7 @@ private:
   bool stopped_ = false;
 };
 
-int main()
+int main(void)
 {
   priority_scheduler sched;
   auto low = sched.get_executor(0);

@@ -41,7 +41,7 @@ struct static_require<object<N>, prop<N> >
 } // namespace traits
 } // namespace asio
 
-int main()
+int main(void)
 {
   object<1> o1 = {};
   object<1> o2 = asio::prefer(o1, prop<1>());

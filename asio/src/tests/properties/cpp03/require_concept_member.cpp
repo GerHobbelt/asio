@@ -48,7 +48,7 @@ struct require_concept_member<object<N>, prop<M> >
 } // namespace traits
 } // namespace asio
 
-int main()
+int main(void)
 {
   object<1> o1 = {};
   object<2> o2 = asio::require_concept(o1, prop<2>());

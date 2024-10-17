@@ -78,7 +78,7 @@ void handle_timeout(const asio::error_code&)
   std::cout << "handle_timeout\n";
 }
 
-int main()
+int main(void)
 {
   try
   {

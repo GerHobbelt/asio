@@ -23,7 +23,7 @@ struct object
 {
 };
 
-int main()
+int main(void)
 {
   object<1> o1 = {};
   object<1> o2 = asio::prefer(o1, prop<2>());

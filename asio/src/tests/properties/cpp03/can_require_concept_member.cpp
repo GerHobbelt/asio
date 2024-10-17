@@ -48,7 +48,7 @@ struct require_concept_member<object<N>, prop<M> >
 } // namespace traits
 } // namespace asio
 
-int main()
+int main(void)
 {
   assert((asio::can_require_concept<object<1>, prop<2> >::value));
   assert((asio::can_require_concept<const object<1>, prop<2> >::value));

@@ -142,7 +142,7 @@ Return to \ref tutdaytime2
 \section tutdaytime3funcmain The main() function
 
 \dontinclude daytime3/server.cpp
-\skip int main()
+\skip int main(void)
 \until try
 \until {
 
@@ -312,7 +312,7 @@ This tutorial program shows how to use asio to implement a server application
 with UDP.
 
 \dontinclude daytime5/server.cpp
-\skip int main()
+\skip int main(void)
 \until asio::io_context
 
 Create an asio::ip::udp::socket object to receive requests on UDP port 13.
@@ -357,7 +357,7 @@ Return to \ref tutdaytime5
 \section tutdaytime6funcmain The main() function
 
 \dontinclude daytime6/server.cpp
-\skip int main()
+\skip int main(void)
 \until try
 \until {
 
@@ -451,7 +451,7 @@ have just written, into a single server application.
 \section tutdaytime7funcmain The main() function
 
 \dontinclude daytime7/server.cpp
-\skip int main()
+\skip int main(void)
 \until asio::io_context
 
 We will begin by creating a server object to accept a TCP client connection.

@@ -34,7 +34,7 @@ struct static_require<object<N>, prop<N> >
 } // namespace traits
 } // namespace asio
 
-int main()
+int main(void)
 {
   assert((!asio::can_prefer<object<1>, prop<1> >::value));
   assert((!asio::can_prefer<object<1>, prop<1>, prop<1> >::value));

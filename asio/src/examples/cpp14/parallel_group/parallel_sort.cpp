@@ -102,7 +102,7 @@ auto parallel_sort(
     );
 }
 
-int main()
+int main(void)
 {
   asio::thread_pool pool(4);
 

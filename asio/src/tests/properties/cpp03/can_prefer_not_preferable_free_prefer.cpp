@@ -48,7 +48,7 @@ struct prefer_free<object<N>, prop<M> >
 } // namespace traits
 } // namespace asio
 
-int main()
+int main(void)
 {
   assert((!asio::can_prefer<object<1>, prop<2> >::value));
   assert((!asio::can_prefer<object<1>, prop<2>, prop<3> >::value));

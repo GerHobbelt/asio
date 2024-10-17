@@ -142,7 +142,7 @@ private:
   boost::array<char, 1> recv_buffer_;
 };
 
-int main()
+int main(void)
 {
   try
   {

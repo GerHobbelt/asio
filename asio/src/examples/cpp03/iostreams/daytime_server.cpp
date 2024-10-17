@@ -22,7 +22,7 @@ std::string make_daytime_string()
   return ctime(&now);
 }
 
-int main()
+int main(void)
 {
   try
   {

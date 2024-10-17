@@ -70,7 +70,7 @@ private:
   std::array<char, 512> data_;
 };
 
-int main()
+int main(void)
 {
   try
   {
