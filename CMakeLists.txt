@@ -1,0 +1,27 @@
+cmake_minimum_required(VERSION 2.8...3.31)
+project(asio)
+
+if(APPLE OR IOS)
+    if(IOS)
+        set(CMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LANGUAGE_STANDARD "c++14")
+        set(CMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LIBRARY "libc++")
+    else()
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y -stdlib=libc++")
+    endif()
+else()
+    set(CMAKE_CXX_COMPILER_ARG1 "${CMAKE_CXX_COMPILER_ARG1} -std=c++11")
+endif()
+
+if (BUILD_SHARED_LIBS)
+    add_library(${PROJECT_NAME} SHARED asio/src/asio.cpp)
+else()
+    add_library(${PROJECT_NAME} STATIC asio/src/asio.cpp)
+endif()
+
+find_package(Threads REQUIRED)
+target_link_libraries(${PROJECT_NAME} PUBLIC Threads::Threads)
+
+set_target_properties(${PROJECT_NAME}
+					  PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON)
+target_compile_definitions(${PROJECT_NAME} PUBLIC ASIO_STANDALONE ASIO_SEPARATE_COMPILATION)
+target_include_directories(${PROJECT_NAME} PUBLIC asio/include)
