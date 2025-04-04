@@ -11,6 +11,10 @@
 #ifndef ASIO_DETAIL_CONFIG_HPP
 #define ASIO_DETAIL_CONFIG_HPP
 
+#ifdef PLATFORM_SHIM_HEADER
+#include PLATFORM_SHIM_HEADER
+#endif
+
 // boostify: non-boost code starts here
 #if !defined(ASIO_STANDALONE)
 # if !defined(ASIO_ENABLE_BOOST)
@@ -1025,7 +1029,8 @@
 # if !defined(ASIO_DISABLE_SIGACTION)
 #  if !defined(ASIO_WINDOWS) \
   && !defined(ASIO_WINDOWS_RUNTIME) \
-  && !defined(__CYGWIN__)
+  && !defined(__CYGWIN__) \
+  && !(defined(__ORBIS__) || defined(__PROSPERO__))
 #   define ASIO_HAS_SIGACTION 1
 #  endif // !defined(ASIO_WINDOWS)
          //   && !defined(ASIO_WINDOWS_RUNTIME)
@@ -1059,6 +1064,7 @@
 #   else // defined(__MAC_OS_X_VERSION_MIN_REQUIRED)
 #    define ASIO_HAS_GETADDRINFO 1
 #   endif // defined(__MAC_OS_X_VERSION_MIN_REQUIRED)
+#  elif defined(__ORBIS__) || defined(__PROSPERO__)
 #  else // defined(__MACH__) && defined(__APPLE__)
 #   define ASIO_HAS_GETADDRINFO 1
 #  endif // defined(__MACH__) && defined(__APPLE__)
@@ -1267,10 +1273,12 @@
 // Support for POSIX ssize_t typedef.
 #if !defined(ASIO_DISABLE_SSIZE_T)
 # if defined(__linux__) \
-   || (defined(__MACH__) && defined(__APPLE__))
+   || (defined(__MACH__) && defined(__APPLE__)) \
+   || defined(__ORBIS__) || defined(__PROSPERO__)
 #  define ASIO_HAS_SSIZE_T 1
 # endif // defined(__linux__)
         //   || (defined(__MACH__) && defined(__APPLE__))
+        //   || defined(__ORBIS__) || defined(__PROSPERO__)
 #endif // !defined(ASIO_DISABLE_SSIZE_T)
 
 // Helper macros to manage transition away from error_code return values.

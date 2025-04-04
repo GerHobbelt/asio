@@ -429,10 +429,14 @@ public:
     ASIO_HANDLER_CREATION((reactor_.context(), *p.p, "socket",
           &impl, impl.socket_, "async_receive_from"));
 
+#if defined(__ORBIS__) || defined(__PROSPERO__) // No MSG_OOB
+    start_op(impl, reactor::read_op, p.p, is_continuation, true, false, true, &io_ex, 0);
+#else
     start_op(impl,
         (flags & socket_base::message_out_of_band)
           ? reactor::except_op : reactor::read_op,
         p.p, is_continuation, true, false, true, &io_ex, 0);
+#endif
     p.v = p.p = 0;
   }
 
@@ -468,10 +472,14 @@ public:
     // Reset endpoint since it can be given no sensible value at this time.
     sender_endpoint = endpoint_type();
 
+#if defined(__ORBIS__) || defined(__PROSPERO__) // No MSG_OOB
+    start_op(impl, reactor::read_op, p.p, is_continuation, false, false, false, &io_ex, 0);
+#else
     start_op(impl,
         (flags & socket_base::message_out_of_band)
           ? reactor::except_op : reactor::read_op,
         p.p, is_continuation, false, false, false, &io_ex, 0);
+#endif
     p.v = p.p = 0;
   }
 

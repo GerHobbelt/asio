@@ -22,7 +22,7 @@
   || defined(__CYGWIN__) \
   || defined(ASIO_WINDOWS_RUNTIME)
 # include <winerror.h>
-#else
+#elif !defined(__ORBIS__) && !defined(__PROSPERO__)
 # include <cerrno>
 # include <netdb.h>
 #endif

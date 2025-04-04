@@ -18,6 +18,7 @@
 #include "asio/detail/config.hpp"
 
 #include <cctype>
+#include <cstddef>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -124,6 +125,7 @@ socket_type accept(socket_type s, void* addr,
     return new_s;
 
 #if defined(__MACH__) && defined(__APPLE__) || defined(__FreeBSD__)
+#if !(defined(__ORBIS__) || defined(__PROSPERO__))
   int optval = 1;
   int result = ::setsockopt(new_s, SOL_SOCKET,
       SO_NOSIGPIPE, &optval, sizeof(optval));
@@ -133,6 +135,7 @@ socket_type accept(socket_type s, void* addr,
     ::close(new_s);
     return invalid_socket;
   }
+#endif
 #endif
 
   asio::error::clear(ec);
@@ -341,6 +344,9 @@ int close(socket_type s, state_type& state,
       int flags = ::fcntl(s, F_GETFL, 0);
       if (flags >= 0)
         ::fcntl(s, F_SETFL, flags & ~O_NONBLOCK);
+#elif defined(__ORBIS__) || defined(__PROSPERO__)
+  int optval = 0;
+  int result = sceNetSetsockopt(s, SCE_NET_SOL_SOCKET, SCE_NET_SO_NBIO, &optval, sizeof(optval));
 # else // defined(__SYMBIAN32__) || defined(__EMSCRIPTEN__)
       ioctl_arg_type arg = 0;
       if ((state & possible_dup) == 0)
@@ -399,6 +405,9 @@ bool set_user_non_blocking(socket_type s,
     result = (flag != result) ? ::fcntl(s, F_SETFL, flag) : 0;
     get_last_error(ec, result < 0);
   }
+#elif defined(__ORBIS__) || defined(__PROSPERO__)
+  int optval = (value ? 1 : 0);
+  int result = sceNetSetsockopt(s, SCE_NET_SOL_SOCKET, SCE_NET_SO_NBIO, &optval, sizeof(optval));
 #else // defined(__SYMBIAN32__) || defined(__EMSCRIPTEN__)
   ioctl_arg_type arg = (value ? 1 : 0);
   int result = 0;
@@ -475,6 +484,9 @@ bool set_internal_non_blocking(socket_type s,
     result = (flag != result) ? ::fcntl(s, F_SETFL, flag) : 0;
     get_last_error(ec, result < 0);
   }
+#elif defined(__ORBIS__) || defined(__PROSPERO__)
+  int optval = (value ? 1 : 0);
+  int result = sceNetSetsockopt(s, SCE_NET_SOL_SOCKET, SCE_NET_SO_NBIO, &optval, sizeof(optval));
 #else // defined(__SYMBIAN32__) || defined(__EMSCRIPTEN__)
   ioctl_arg_type arg = (value ? 1 : 0);
   int result = 0;
@@ -629,7 +641,8 @@ bool non_blocking_connect(socket_type s, asio::error_code& ec)
   // get spurious readiness notifications from the reactor.
 #if defined(ASIO_WINDOWS) \
   || defined(__CYGWIN__) \
-  || defined(__SYMBIAN32__)
+  || defined(__SYMBIAN32__) \
+  || defined(__ORBIS__) || defined(__PROSPERO__)
   fd_set write_fds;
   FD_ZERO(&write_fds);
   FD_SET(s, &write_fds);
@@ -678,7 +691,7 @@ bool non_blocking_connect(socket_type s, asio::error_code& ec)
 int socketpair(int af, int type, int protocol,
     socket_type sv[2], asio::error_code& ec)
 {
-#if defined(ASIO_WINDOWS) || defined(__CYGWIN__)
+#if defined(ASIO_WINDOWS) || defined(__CYGWIN__) || defined(__ORBIS__) || defined(__PROSPERO__)
   (void)(af);
   (void)(type);
   (void)(protocol);
@@ -712,6 +725,10 @@ bool sockatmark(socket_type s, asio::error_code& ec)
   if (ec.value() == ENOTTY)
     ec = asio::error::not_socket;
 # endif // defined(ENOTTY)
+#elif defined(__ORBIS__) || defined(__PROSPERO__)
+  // sockatmark not available
+  int value = 0;
+  ec = asio::error_code();
 #else // defined(SIOCATMARK)
   int value = ::sockatmark(s);
   get_last_error(ec, value < 0);
@@ -731,6 +748,8 @@ size_t available(socket_type s, asio::error_code& ec)
   ioctl_arg_type value = 0;
 #if defined(ASIO_WINDOWS) || defined(__CYGWIN__)
   int result = ::ioctlsocket(s, FIONREAD, &value);
+#elif defined(__ORBIS__) || defined(__PROSPERO__)
+  int result = 0;
 #else // defined(ASIO_WINDOWS) || defined(__CYGWIN__)
   int result = ::ioctl(s, FIONREAD, &value);
 #endif // defined(ASIO_WINDOWS) || defined(__CYGWIN__)
@@ -1896,6 +1915,7 @@ socket_type socket(int af, int type, int protocol,
   if (s == invalid_socket)
     return s;
 
+#if !(defined(__ORBIS__) || defined(__PROSPERO__))
   int optval = 1;
   int result = ::setsockopt(s, SOL_SOCKET,
       SO_NOSIGPIPE, &optval, sizeof(optval));
@@ -1905,6 +1925,7 @@ socket_type socket(int af, int type, int protocol,
     ::close(s);
     return invalid_socket;
   }
+#endif
 
   return s;
 #else
@@ -2204,6 +2225,7 @@ int ioctl(socket_type s, state_type& state, int cmd,
   get_last_error(ec, result < 0);
   if (result >= 0)
   {
+#if !(defined(__ORBIS__) || defined(__PROSPERO__))
     // When updating the non-blocking mode we always perform the ioctl syscall,
     // even if the flags would otherwise indicate that the socket is already in
     // the correct state. This ensures that the underlying socket is put into
@@ -2223,6 +2245,7 @@ int ioctl(socket_type s, state_type& state, int cmd,
         state &= ~(user_set_non_blocking | internal_non_blocking);
       }
     }
+#endif
   }
 
   return result;
@@ -2280,7 +2303,8 @@ int poll_read(socket_type s, state_type state,
 
 #if defined(ASIO_WINDOWS) \
   || defined(__CYGWIN__) \
-  || defined(__SYMBIAN32__)
+  || defined(__SYMBIAN32__) \
+  || defined(__ORBIS__) || defined(__PROSPERO__)
   fd_set fds;
   FD_ZERO(&fds);
   FD_SET(s, &fds);
@@ -2332,7 +2356,8 @@ int poll_write(socket_type s, state_type state,
 
 #if defined(ASIO_WINDOWS) \
   || defined(__CYGWIN__) \
-  || defined(__SYMBIAN32__)
+  || defined(__SYMBIAN32__) \
+  || defined(__ORBIS__) || defined(__PROSPERO__)
   fd_set fds;
   FD_ZERO(&fds);
   FD_SET(s, &fds);
@@ -2384,7 +2409,8 @@ int poll_error(socket_type s, state_type state,
 
 #if defined(ASIO_WINDOWS) \
   || defined(__CYGWIN__) \
-  || defined(__SYMBIAN32__)
+  || defined(__SYMBIAN32__) \
+  || defined(__ORBIS__) || defined(__PROSPERO__)
   fd_set fds;
   FD_ZERO(&fds);
   FD_SET(s, &fds);
@@ -2435,7 +2461,8 @@ int poll_connect(socket_type s, int msec, asio::error_code& ec)
 
 #if defined(ASIO_WINDOWS) \
   || defined(__CYGWIN__) \
-  || defined(__SYMBIAN32__)
+  || defined(__SYMBIAN32__) \
+  || defined(__ORBIS__) || defined(__PROSPERO__)
   fd_set write_fds;
   FD_ZERO(&write_fds);
   FD_SET(s, &write_fds);
@@ -2573,6 +2600,7 @@ const char* inet_ntop(int af, const void* src, char* dest, size_t length,
   get_last_error(ec, true);
   if (result == 0 && !ec)
     ec = asio::error::invalid_argument;
+#if !(defined(__ORBIS__) || defined(__PROSPERO__))
   if (result != 0 && af == ASIO_OS_DEF(AF_INET6) && scope_id != 0)
   {
     using namespace std; // For strcat and sprintf.
@@ -2593,6 +2621,7 @@ const char* inet_ntop(int af, const void* src, char* dest, size_t length,
 #endif // defined(ASIO_HAS_SECURE_RTL)
     strcat(dest, if_name);
   }
+#endif
   return result;
 #endif // defined(ASIO_WINDOWS) || defined(__CYGWIN__)
 }
@@ -2832,6 +2861,7 @@ int inet_pton(int af, const char* src, void* dest,
   get_last_error(ec, true);
   if (result <= 0 && !ec)
     ec = asio::error::invalid_argument;
+#if !(defined(__ORBIS__) || defined(__PROSPERO__))
   if (result > 0 && is_v6 && scope_id)
   {
     using namespace std; // For strchr and atoi.
@@ -2849,6 +2879,7 @@ int inet_pton(int af, const char* src, void* dest,
         *scope_id = atoi(if_name + 1);
     }
   }
+#endif
   return result;
 #endif // defined(ASIO_WINDOWS) || defined(__CYGWIN__)
 }
@@ -2884,6 +2915,13 @@ int gethostname(char* name, int namelen, asio::error_code& ec)
         asio::system_category());
     return -1;
   }
+#elif (defined(__ORBIS__) || defined(__PROSPERO__))
+  if(strcpy_s(name, namelen, "localhost"))
+  {
+    ec = asio::error::name_too_long;
+    return -1;
+  }
+  return 0;
 #else // defined(ASIO_WINDOWS_RUNTIME)
   int result = ::gethostname(name, namelen);
   get_last_error(ec, result != 0);
@@ -2918,6 +2956,10 @@ inline asio::error_code translate_netdb_error(int error)
   }
 }
 
+#if defined(__ORBIS__) || defined(__PROSPERO__)
+    #include "../platform_shims/ps/platform_shims.h"
+#endif
+
 inline hostent* gethostbyaddr(const char* addr, int length, int af,
     hostent* result, char* buffer, int buflength, asio::error_code& ec)
 {
@@ -2950,6 +2992,8 @@ inline hostent* gethostbyaddr(const char* addr, int length, int af,
     return 0;
   *result = *retval;
   return retval;
+#elif defined(__ORBIS__) || defined(__PROSPERO__)
+  return ::gethostbyaddr(addr);
 #else
   hostent* retval = 0;
   int error = 0;
@@ -3006,6 +3050,8 @@ inline hostent* gethostbyname(const char* name, int af, struct hostent* result,
     return 0;
   *result = *retval;
   return retval;
+#elif defined(__ORBIS__) || defined(__PROSPERO__)
+  return ::gethostbyname(name);
 #else
   (void)(ai_flags);
   if (af != ASIO_OS_DEF(AF_INET))
@@ -3324,6 +3370,10 @@ inline int gai_serv(addrinfo_type* aihead,
   }
   else
   {
+#if defined(__ORBIS__) || defined(__PROSPERO__)
+    // getservbyname not available
+      assert(false);
+#else
     // Try service name with TCP first, then UDP.
     if (hints->ai_socktype == 0 || hints->ai_socktype == SOCK_STREAM)
     {
@@ -3347,6 +3397,7 @@ inline int gai_serv(addrinfo_type* aihead,
         num_found += rc;
       }
     }
+#endif
   }
 
   if (num_found == 0)
@@ -3706,6 +3757,7 @@ inline asio::error_code getnameinfo_emulation(
       sprintf(serv, "%u", ntohs(port));
 #endif // defined(ASIO_HAS_SECURE_RTL)
     }
+#if !defined(__ORBIS__) && !defined(__PROSPERO__) // getservbyport is not available
     else
     {
 #if defined(ASIO_HAS_PTHREADS)
@@ -3735,6 +3787,7 @@ inline asio::error_code getnameinfo_emulation(
       ::pthread_mutex_unlock(&mutex);
 #endif // defined(ASIO_HAS_PTHREADS)
     }
+#endif // defined(__ORBIS__) || defined(__PROSPERO__)
   }
 
   asio::error::clear(ec);
@@ -3990,9 +4043,11 @@ u_long_type network_to_host_long(u_long_type value)
     | (static_cast<u_long_type>(value_p[2]) << 8)
     | static_cast<u_long_type>(value_p[3]);
   return result;
-#else // defined(ASIO_WINDOWS_RUNTIME)
+#elif defined(__ORBIS__) || defined(__PROSPERO__)
+  return sceNetNtohl(value);
+#else
   return ntohl(value);
-#endif // defined(ASIO_WINDOWS_RUNTIME)
+#endif
 }
 
 u_long_type host_to_network_long(u_long_type value)
@@ -4005,9 +4060,11 @@ u_long_type host_to_network_long(u_long_type value)
   result_p[2] = static_cast<unsigned char>((value >> 8) & 0xFF);
   result_p[3] = static_cast<unsigned char>(value & 0xFF);
   return result;
-#else // defined(ASIO_WINDOWS_RUNTIME)
+#elif defined(__ORBIS__) || defined(__PROSPERO__)
+  return sceNetHtonl(value);
+#else
   return htonl(value);
-#endif // defined(ASIO_WINDOWS_RUNTIME)
+#endif
 }
 
 u_short_type network_to_host_short(u_short_type value)
@@ -4017,9 +4074,11 @@ u_short_type network_to_host_short(u_short_type value)
   u_short_type result = (static_cast<u_short_type>(value_p[0]) << 8)
     | static_cast<u_short_type>(value_p[1]);
   return result;
-#else // defined(ASIO_WINDOWS_RUNTIME)
+#elif defined(__ORBIS__) || defined(__PROSPERO__)
+  return sceNetNtohs(value);
+#else
   return ntohs(value);
-#endif // defined(ASIO_WINDOWS_RUNTIME)
+#endif
 }
 
 u_short_type host_to_network_short(u_short_type value)
@@ -4030,9 +4089,11 @@ u_short_type host_to_network_short(u_short_type value)
   result_p[0] = static_cast<unsigned char>((value >> 8) & 0xFF);
   result_p[1] = static_cast<unsigned char>(value & 0xFF);
   return result;
-#else // defined(ASIO_WINDOWS_RUNTIME)
+#elif defined(__ORBIS__) || defined(__PROSPERO__)
+  return sceNetHtons(value);
+#else 
   return htons(value);
-#endif // defined(ASIO_WINDOWS_RUNTIME)
+#endif
 }
 
 } // namespace socket_ops
