@@ -2735,7 +2735,7 @@ struct literal<'0', 'X', Chars...> :
 } // namespace detail
 
 /// Literal operator for creating const_buffer objects from string literals.
-inline const_buffer operator ""_buf(const char* data, std::size_t n)
+inline const_buffer operator "" _buf(const char* data, std::size_t n)
 {
   return const_buffer(data, n);
 }
@@ -2743,7 +2743,7 @@ inline const_buffer operator ""_buf(const char* data, std::size_t n)
 /// Literal operator for creating const_buffer objects from unbounded binary or
 /// hexadecimal integer literals.
 template <char... Chars>
-inline const_buffer operator ""_buf()
+inline const_buffer operator "" _buf()
 {
   return const_buffer(
       +detail::literal<Chars...>::data,
