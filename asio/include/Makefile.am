@@ -140,6 +140,7 @@ nobase_include_HEADERS = \
 	asio/detail/impl/reactive_descriptor_service.ipp \
 	asio/detail/impl/reactive_socket_service_base.ipp \
 	asio/detail/impl/resolver_service_base.ipp \
+	asio/detail/impl/resolver_thread_pool.ipp \
 	asio/detail/impl/scheduler.ipp \
 	asio/detail/impl/select_reactor.hpp \
 	asio/detail/impl/select_reactor.ipp \
@@ -154,7 +155,6 @@ nobase_include_HEADERS = \
 	asio/detail/impl/strand_service.ipp \
 	asio/detail/impl/thread_context.ipp \
 	asio/detail/impl/throw_error.ipp \
-	asio/detail/impl/timer_queue_ptime.ipp \
 	asio/detail/impl/timer_queue_set.ipp \
 	asio/detail/impl/win_event.ipp \
 	asio/detail/impl/win_iocp_file_service.ipp \
@@ -254,6 +254,7 @@ nobase_include_HEADERS = \
 	asio/detail/resolve_op.hpp \
 	asio/detail/resolve_query_op.hpp \
 	asio/detail/resolver_service_base.hpp \
+	asio/detail/resolver_thread_pool.hpp \
 	asio/detail/resolver_service.hpp \
 	asio/detail/scheduler.hpp \
 	asio/detail/scheduler_operation.hpp \
@@ -294,7 +295,6 @@ nobase_include_HEADERS = \
 	asio/detail/timed_cancel_op.hpp \
 	asio/detail/timer_queue_base.hpp \
 	asio/detail/timer_queue.hpp \
-	asio/detail/timer_queue_ptime.hpp \
 	asio/detail/timer_queue_set.hpp \
 	asio/detail/timer_scheduler_fwd.hpp \
 	asio/detail/timer_scheduler.hpp \
