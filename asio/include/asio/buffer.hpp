@@ -2881,7 +2881,7 @@ struct literal<'0', 'X', Chars...> :
 } // namespace detail
 
 /// Literal operator for creating const_buffer objects from string literals.
-inline ASIO_CONST_BUFFER operator"" _buf(const char* data, std::size_t n)
+inline ASIO_CONST_BUFFER operator""_buf(const char* data, std::size_t n)
 {
   return ASIO_CONST_BUFFER(data, n);
 }
