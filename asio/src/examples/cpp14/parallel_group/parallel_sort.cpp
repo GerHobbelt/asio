@@ -123,7 +123,7 @@ int main(void)
       values.end(),
       asio::use_future
     ).get();
-  
+
   auto end = std::chrono::high_resolution_clock::now();
 
   auto duration = end - begin;
